@@ -42,19 +42,31 @@ typedef union vector{
 
 
 
-int main(){
+int main(int argc, char **argv){
+	int size;
+        char *cpt;
+        if(argc!=2){
+                size=256;
+        }else{
+                size=strtol(argv[1],&cpt,10);
+        }
+        if(size%4){
+                printf("error: problem size must be divisible by 4\nsize:%d",size);
+                exit(0);
+        }
+        int vector_size=size/4;
 	
 	register VECTOR *a,*b,*c;
-	a=(VECTOR*)malloc(sizeof(VECTOR)*64);
-	b=(VECTOR*)malloc(sizeof(VECTOR)*64);
-	c=(VECTOR*)malloc(sizeof(VECTOR)*64);
+	a=(VECTOR*)malloc(sizeof(VECTOR)*vector_size);
+	b=(VECTOR*)malloc(sizeof(VECTOR)*vector_size);
+	c=(VECTOR*)malloc(sizeof(VECTOR)*vector_size);
 	register int i;
 	int j;
 
 	srand(1);
 
 	for(i=0;i<4;++i){
-		for(j=0;j<64;++j){
+		for(j=0;j<vector_size;++j){
 			b[i].i[j]=rand()%5;
 			c[i].i[j]=rand()%5;
 		}
@@ -84,14 +96,14 @@ int main(){
         ioctl(fd, PERF_EVENT_IOC_RESET,0);
         ioctl(fd, PERF_EVENT_IOC_ENABLE,0);
         //Compute
-	for (i=0; i<64;++i)
+	for (i=0; i<vector_size;++i)
 		a[i].v = b[i].v + c[i].v;
         //Reads counter
         ioctl(fd, PERF_EVENT_IOC_DISABLE, 0);
         read(fd, counts, sizeof(counts));
 
         for(i=0;i<4;++i){
-                for(j=0;j<64;++j){
+                for(j=0;j<vector_size;++j){
                         printf("%i|",a[i].i[j]);
                 }
         }
