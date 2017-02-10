@@ -1,122 +1,247 @@
 #!/bin/sh
 ############################################_O0_###########################################
-date > ./results/result_gcc5_auto_O0.txt
-echo "Auto vectorization with gcc 5.4 with O0" >> ./results/result_gcc5_auto_O0.txt
-gcc example1_auto.c -w -O0 -o ./results/example1_gcc5_auto_O0
-gcc example1_auto.c -w -O0 -S -o ./results/example1_gcc5_auto_O0.s
-./results/example1_gcc5_auto_O0 >> ./results/result_gcc5_auto_O0.txt
+result_file="./results/result_gcc5_auto_O0.txt"
+executable_file="./bin/example1_gcc5_auto_O0"
+source_file="example1_auto.c"
+assembly_file="./bin/example1_gcc5_auto_O0.s"
+compilation_flags="-w -O0"
+message="Auto vectorization with gcc 5.4 with O0"
+date > $result_file
+echo $message >> $result_file
+gcc $source_file $compilation_flags -o $executable_file
+gcc $source_file $compilation_flags -S -o $assembly_file
+$executable_file >> $result_file
 
-date > ./results/result_gcc5_intr_O0.txt
-echo "Intrinsics vectorization with gcc 5.4 with O0" >> ./results/result_gcc5_intr_O0.txt
-gcc example1_intr.c -w -O0 -o ./results/example1_gcc5_intr_O0
-gcc example1_intr.c -w -O0 -S -o ./results/example1_gcc5_intr_O0.s
-./results/example1_gcc5_intr_O0 >> ./results/result_gcc5_intr_O0.txt
+result_file="./results/result_gcc5_intr_O0.txt"
+executable_file="./bin/example1_gcc5_intr_O0"
+source_file="example1_intr.c"
+assembly_file="./bin/example1_gcc5_intr_O0.s"
+compilation_flags="-w -O0"
+message="Intrinsic vectorization with gcc 5.4 with O0"
+date > $result_file
+echo $message >> $result_file
+gcc $source_file $compilation_flags -o $executable_file
+gcc $source_file $compilation_flags -S -o $assembly_file
+$executable_file >> $result_file
 
-date > ./results/result_gcc5_intr_fixed_reg_O0.txt
-echo "Auto vectorization with gcc 5.4 with O0" >> ./results/result_gcc5_intr_fixed_reg_O0.txt
-gcc example1_intr_fixed_reg.c -w -O0 -o ./results/example1_intr_fixed_reg_O0
-gcc example1_intr_fixed_reg.c -w -O0 -S -o ./results/example1_intr_fixed_reg_O0.s
-./results/example1_intr_fixed_reg_O0 >> ./results/result_gcc5_intr_fixed_reg_O0.txt
 
-date > ./results/result_gcc5_intr_loop_unroll_O0.txt
-echo "Intrinsics vectorization with gcc 5.4 with O0" >> ./results/result_gcc5_intr_loop_unroll_O0.txt
-gcc example1_intr_loop_unroll.c -w -O0 -o ./results/example1_intr_loop_unroll_O0
-gcc example1_intr_loop_unroll.c -w -O0 -S -o ./results/example1_intr_loop_unroll_O0.s
-./results/example1_intr_loop_unroll_O0 >> ./results/result_gcc5_intr_loop_unroll_O0.txt
+result_file="./results/result_gcc5_intr_fixed_reg_O0.txt"
+executable_file="./bin/example1_gcc5_intr_fixed_reg_O0"
+source_file="example1_intr_fixed_reg.c"
+assembly_file="./bin/example1_gcc5_intr_fixed_reg_O0.s"
+compilation_flags="-w -O0"
+message="Instrinsic vectorization with fixed registers with gcc5.4 with O0"
+date > $result_file
+echo $message >> $result_file
+gcc $source_file $compilation_flags -o $executable_file
+gcc $source_file $compilation_flags -S -o $assembly_file
+$executable_file >> $result_file
+
+result_file="./results/result_gcc5_intr_loop_unroll_O0.txt"
+executable_file="./bin/example1_gcc5_intr_loop_unroll_O0"
+source_file="example1_intr_loop_unroll.c"
+assembly_file="./bin/example1_gcc5_intr_loop_unroll_O0.s"
+compilation_flags="-w -O0"
+message="Intrinsic vectorization with loop unroll with gcc 5.4 with O0"
+date > $result_file
+echo $message >> $result_file
+gcc $source_file $compilation_flags -o $executable_file
+gcc $source_file $compilation_flags -S -o $assembly_file
+$executable_file >> $result_file
 ############################################_O1_###########################################
-date > ./results/result_gcc5_auto_O1.txt
-echo "Auto vectorization with gcc 5.4 with O1" >> ./results/result_gcc5_auto_O1.txt
-gcc example1_auto.c -w -O1 -o ./results/example1_gcc5_auto_O1
-gcc example1_auto.c -w -O1 -S -o ./results/example1_gcc5_auto_O1.s
-./results/example1_gcc5_auto_O1 >> ./results/result_gcc5_auto_O1.txt
+ult_file="./results/result_gcc5_auto_O1.txt"
+executable_file="./bin/example1_gcc5_auto_O1"
+source_file="example1_auto.c"
+assembly_file="./bin/example1_gcc5_auto_O1.s"
+compilation_flags="-w -O1"
+message="Auto vectorization with gcc 5.4 with O1"
+date > $result_file
+echo $message >> $result_file
+gcc $source_file $compilation_flags -o $executable_file
+gcc $source_file $compilation_flags -S -o $assembly_file
+$executable_file >> $result_file
 
-date > ./results/result_gcc5_intr_O1.txt
-echo "Intrinsics vectorization with gcc 5.4 with O1" >> ./results/result_gcc5_intr_O1.txt
-gcc example1_intr.c -w -O1 -o ./results/example1_gcc5_intr_O1
-gcc example1_intr.c -w -O1 -S -o ./results/example1_gcc5_intr_O1.s
-./results/example1_gcc5_intr_O1 >> ./results/result_gcc5_intr_O1.txt
+result_file="./results/result_gcc5_intr_O1.txt"
+executable_file="./bin/example1_gcc5_intr_O1"
+source_file="example1_intr.c"
+assembly_file="./bin/example1_gcc5_intr_O1.s"
+compilation_flags="-w -O1"
+message="Intrinsic vectorization with gcc 5.4 with O1"
+date > $result_file
+echo $message >> $result_file
+gcc $source_file $compilation_flags -o $executable_file
+gcc $source_file $compilation_flags -S -o $assembly_file
+$executable_file >> $result_file
 
-date > ./results/result_gcc5_intr_fixed_reg_O1.txt
-echo "Auto vectorization with gcc 5.4 with O1" >> ./results/result_gcc5_intr_fixed_reg_O1.txt
-gcc example1_intr_fixed_reg.c -w -O1 -o ./results/example1_intr_fixed_reg_O1
-gcc example1_intr_fixed_reg.c -w -O1 -S -o ./results/example1_intr_fixed_reg_O1.s
-./results/example1_intr_fixed_reg_O1 >> ./results/result_gcc5_intr_fixed_reg_O1.txt
 
-date > ./results/result_gcc5_intr_loop_unroll_O1.txt
-echo "Intrinsics vectorization with gcc 5.4 with O1" >> ./results/result_gcc5_intr_loop_unroll_O1.txt
-gcc example1_intr_loop_unroll.c -w -O1 -o ./results/example1_intr_loop_unroll_O1
-gcc example1_intr_loop_unroll.c -w -O1 -S -o ./results/example1_intr_loop_unroll_O1.s
-./results/example1_intr_loop_unroll_O1 >> ./results/result_gcc5_intr_loop_unroll_O1.txt
+result_file="./results/result_gcc5_intr_fixed_reg_O1.txt"
+executable_file="./bin/example1_gcc5_intr_fixed_reg_O1"
+source_file="example1_intr_fixed_reg.c"
+assembly_file="./bin/example1_gcc5_intr_fixed_reg_O1.s"
+compilation_flags="-w -O1"
+message="Intrinsic vectorization with fixed registers gcc 5.4 with O1"
+date > $result_file
+echo $message >> $result_file
+gcc $source_file $compilation_flags -o $executable_file
+gcc $source_file $compilation_flags -S -o $assembly_file
+$executable_file >> $result_file
+
+result_file="./results/result_gcc5_intr_loop_unroll_O1.txt"
+executable_file="./bin/example1_gcc5_intr_loop_unroll_O1"
+source_file="example1_intr_loop_unroll.c"
+assembly_file="./bin/example1_gcc5_intr_loop_unroll_O1.s"
+compilation_flags="-w -O1"
+message="Intrinsic vectorization with loop unroll with gcc 5.4 with O1"
+date > $result_file
+echo $message >> $result_file
+gcc $source_file $compilation_flags -o $executable_file
+gcc $source_file $compilation_flags -S -o $assembly_file
+$executable_file >> $result_file
 ############################################_O2_###########################################
-date > ./results/result_gcc5_auto_O2.txt
-echo "Auto vectorization with gcc 5.4 with O2" >> ./results/result_gcc5_auto_O2.txt
-gcc example1_auto.c -w -O2 -o ./results/example1_gcc5_auto_O2
-gcc example1_auto.c -w -O2 -S -o ./results/example1_gcc5_auto_O2.s
-./results/example1_gcc5_auto_O2 >> ./results/result_gcc5_auto_O2.txt
+result_file="./results/result_gcc5_auto_O2.txt"
+executable_file="./bin/example1_gcc5_auto_O2"
+source_file="example1_auto.c"
+assembly_file="./bin/example1_gcc5_auto_O2.s"
+compilation_flags="-w -O2"
+message="Auto vectorization with gcc 5.4 with O2"
+date > $result_file
+echo $message >> $result_file
+gcc $source_file $compilation_flags -o $executable_file
+gcc $source_file $compilation_flags -S -o $assembly_file
+$executable_file >> $result_file
 
-date > ./results/result_gcc5_intr_O2.txt
-echo "Intrinsics vectorization with gcc 5.4 with O2" >> ./results/result_gcc5_intr_O2.txt
-gcc example1_intr.c -w -O2 -o ./results/example1_gcc5_intr_O2
-gcc example1_intr.c -w -O2 -S -o ./results/example1_gcc5_intr_O2.s
-./results/example1_gcc5_intr_O2 >> ./results/result_gcc5_intr_O2.txt
+result_file="./results/result_gcc5_intr_O2.txt"
+executable_file="./bin/example1_gcc5_intr_O2"
+source_file="example1_intr.c"
+assembly_file="./bin/example1_gcc5_intr_O2.s"
+compilation_flags="-w -O2"
+message="Intrinsic vectorization with gcc 5.4 with O2"
+date > $result_file
+echo $message >> $result_file
+gcc $source_file $compilation_flags -o $executable_file
+gcc $source_file $compilation_flags -S -o $assembly_file
+$executable_file >> $result_file
 
-date > ./results/result_gcc5_intr_fixed_reg_O2.txt
-echo "Auto vectorization with gcc 5.4 with O2" >> ./results/result_gcc5_intr_fixed_reg_O2.txt
-gcc example1_intr_fixed_reg.c -w -O2 -o ./results/example1_intr_fixed_reg_O2
-gcc example1_intr_fixed_reg.c -w -O2 -S -o ./results/example1_intr_fixed_reg_O2.s
-./results/example1_intr_fixed_reg_O2 >> ./results/result_gcc5_intr_fixed_reg_O2.txt
 
-date > ./results/result_gcc5_intr_loop_unroll_O2.txt
-echo "Intrinsics vectorization with gcc 5.4 with O2" >> ./results/result_gcc5_intr_loop_unroll_O2.txt
-gcc example1_intr_loop_unroll.c -w -O2 -o ./results/example1_intr_loop_unroll_O2
-gcc example1_intr_loop_unroll.c -w -O2 -S -o ./results/example1_intr_loop_unroll_O2.s
-./results/example1_intr_loop_unroll_O2 >> ./results/result_gcc5_intr_loop_unroll_O2.txt
+result_file="./results/result_gcc5_intr_fixed_reg_O2.txt"
+executable_file="./bin/example1_gcc5_intr_fixed_reg_O2"
+source_file="example1_intr_fixed_reg.c"
+assembly_file="./bin/example1_gcc5_intr_fixed_reg_O2.s"
+compilation_flags="-w -O2"
+message="Instrinsic vectorization with fixed registers with gcc5.4 with O2"
+date > $result_file
+echo $message >> $result_file
+gcc $source_file $compilation_flags -o $executable_file
+gcc $source_file $compilation_flags -S -o $assembly_file
+$executable_file >> $result_file
+
+result_file="./results/result_gcc5_intr_loop_unroll_O2.txt"
+executable_file="./bin/example1_gcc5_intr_loop_unroll_O2"
+source_file="example1_intr_loop_unroll.c"
+assembly_file="./bin/example1_gcc5_intr_loop_unroll_O2.s"
+compilation_flags="-w -O2"
+message="Intrinsic vectorization with loop unroll with gcc 5.4 with O2"
+date > $result_file
+echo $message >> $result_file
+gcc $source_file $compilation_flags -o $executable_file
+gcc $source_file $compilation_flags -S -o $assembly_file
+$executable_file >> $result_file
 ############################################_O3_###########################################
-date > ./results/result_gcc5_auto_O3.txt
-echo "Auto vectorization with gcc 5.4 with O3" >> ./results/result_gcc5_auto_O3.txt
-gcc example1_auto.c -w -O3 -o ./results/example1_gcc5_auto_O3
-gcc example1_auto.c -w -O3 -S -o ./results/example1_gcc5_auto_O3.s
-./results/example1_gcc5_auto_O3 >> ./results/result_gcc5_auto_O3.txt
+result_file="./results/result_gcc5_auto_O3.txt"
+executable_file="./bin/example1_gcc5_auto_O3"
+source_file="example1_auto.c"
+assembly_file="./bin/example1_gcc5_auto_O3.s"
+compilation_flags="-w -O3"
+message="Auto vectorization with gcc 5.4 with O3"
+date > $result_file
+echo $message >> $result_file
+gcc $source_file $compilation_flags -o $executable_file
+gcc $source_file $compilation_flags -S -o $assembly_file
+$executable_file >> $result_file
 
-date > ./results/result_gcc5_intr_O3.txt
-echo "Intrinsics vectorization with gcc 5.4 with O3" >> ./results/result_gcc5_intr_O3.txt
-gcc example1_intr.c -w -O3 -o ./results/example1_gcc5_intr_O3
-gcc example1_intr.c -w -O3 -S -o ./results/example1_gcc5_intr_O3.s
-./results/example1_gcc5_intr_O3 >> ./results/result_gcc5_intr_O3.txt
+result_file="./results/result_gcc5_intr_O3.txt"
+executable_file="./bin/example1_gcc5_intr_O3"
+source_file="example1_intr.c"
+assembly_file="./bin/example1_gcc5_intr_O3.s"
+compilation_flags="-w -O3"
+message="Intrinsic vectorization with gcc 5.4 with O3"
+date > $result_file
+echo $message >> $result_file
+gcc $source_file $compilation_flags -o $executable_file
+gcc $source_file $compilation_flags -S -o $assembly_file
+$executable_file >> $result_file
 
-date > ./results/result_gcc5_intr_fixed_reg_O3.txt
-echo "Auto vectorization with gcc 5.4 with O3" >> ./results/result_gcc5_intr_fixed_reg_O3.txt
-gcc example1_intr_fixed_reg.c -w -O3 -o ./results/example1_intr_fixed_reg_O3
-gcc example1_intr_fixed_reg.c -w -O3 -S -o ./results/example1_intr_fixed_reg_O3.s
-./results/example1_intr_fixed_reg_O3 >> ./results/result_gcc5_intr_fixed_reg_O3.txt
 
-date > ./results/result_gcc5_intr_loop_unroll_O3.txt
-echo "Intrinsics vectorization with gcc 5.4 with O3" >> ./results/result_gcc5_intr_loop_unroll_O3.txt
-gcc example1_intr_loop_unroll.c -w -O3 -o ./results/example1_intr_loop_unroll_O3
-gcc example1_intr_loop_unroll.c -w -O3 -S -o ./results/example1_intr_loop_unroll_O3.s
-./results/example1_intr_loop_unroll_O3 >> ./results/result_gcc5_intr_loop_unroll_O3.txt
+result_file="./results/result_gcc5_intr_fixed_reg_O3.txt"
+executable_file="./bin/example1_gcc5_intr_fixed_reg_O3"
+source_file="example1_intr_fixed_reg.c"
+assembly_file="./bin/example1_gcc5_intr_fixed_reg_O3.s"
+compilation_flags="-w -O3"
+message="Instrinsic vectorization with fixed registers with gcc5.4 with O3"
+date > $result_file
+echo $message >> $result_file
+gcc $source_file $compilation_flags -o $executable_file
+gcc $source_file $compilation_flags -S -o $assembly_file
+$executable_file >> $result_file
+
+result_file="./results/result_gcc5_intr_loop_unroll_O3.txt"
+executable_file="./bin/example1_gcc5_intr_loop_unroll_O3"
+source_file="example1_intr_loop_unroll.c"
+assembly_file="./bin/example1_gcc5_intr_loop_unroll_O3.s"
+compilation_flags="-w -O3"
+message="Intrinsic vectorization with loop unroll with gcc 5.4 with O3"
+date > $result_file
+echo $message >> $result_file
+gcc $source_file $compilation_flags -o $executable_file
+gcc $source_file $compilation_flags -S -o $assembly_file
+$executable_file >> $result_file
 ############################################_-funroll-all-loops_###########################################
-date > ./results/result_gcc5_auto_funroll-all-loops.txt
-echo "Auto vectorization with gcc 5.4 with funroll-all-loops" >> ./results/result_gcc5_auto_funroll-all-loops.txt
-gcc example1_auto.c -w -funroll-all-loops -o ./results/example1_gcc5_auto_funroll-all-loops
-gcc example1_auto.c -w -funroll-all-loops -S -o ./results/example1_gcc5_auto_funroll-all-loops.s
-./results/example1_gcc5_auto_funroll-all-loops >> ./results/result_gcc5_auto_funroll-all-loops.txt
+result_file="./results/result_gcc5_auto_funroll-all-loops.txt"
+executable_file="./bin/example1_gcc5_auto_funroll-all-loops"
+source_file="example1_auto.c"
+assembly_file="./bin/example1_gcc5_auto_funroll-all-loops.s"
+compilation_flags="-w -funroll-all-loops"
+message="Auto vectorization with gcc 5.4 with funroll-all-loops"
+date > $result_file
+echo $message >> $result_file
+gcc $source_file $compilation_flags -o $executable_file
+gcc $source_file $compilation_flags -S -o $assembly_file
+$executable_file >> $result_file
 
-date > ./results/result_gcc5_intr_funroll-all-loops.txt
-echo "Intrinsics vectorization with gcc 5.4 with funroll-all-loops" >> ./results/result_gcc5_intr_funroll-all-loops.txt
-gcc example1_intr.c -w -funroll-all-loops -o ./results/example1_gcc5_intr_funroll-all-loops
-gcc example1_intr.c -w -funroll-all-loops -S -o ./results/example1_gcc5_intr_funroll-all-loops.s
-./results/example1_gcc5_intr_funroll-all-loops >> ./results/result_gcc5_intr_funroll-all-loops.txt
+result_file="./results/result_gcc5_intr_funroll-all-loops.txt"
+executable_file="./bin/example1_gcc5_intr_funroll-all-loops"
+source_file="example1_intr.c"
+assembly_file="./bin/example1_gcc5_intr_funroll-all-loops.s"
+compilation_flags="-w -funroll-all-loops"
+message="Intrinsic vectorization with gcc 5.4 with funroll-all-loops"
+date > $result_file
+echo $message >> $result_file
+gcc $source_file $compilation_flags -o $executable_file
+gcc $source_file $compilation_flags -S -o $assembly_file
+$executable_file >> $result_file
 
-date > ./results/result_gcc5_intr_fixed_reg_funroll-all-loops.txt
-echo "Auto vectorization with gcc 5.4 with funroll-all-loops" >> ./results/result_gcc5_intr_fixed_reg_funroll-all-loops.txt
-gcc example1_intr_fixed_reg.c -w -funroll-all-loops -o ./results/example1_intr_fixed_reg_funroll-all-loops
-gcc example1_intr_fixed_reg.c -w -funroll-all-loops -S -o ./results/example1_intr_fixed_reg_funroll-all-loops.s
-./results/example1_intr_fixed_reg_funroll-all-loops >> ./results/result_gcc5_intr_fixed_reg_funroll-all-loops.txt
 
-date > ./results/result_gcc5_intr_loop_unroll_funroll-all-loops.txt
-echo "Intrinsics vectorization with gcc 5.4 with funroll-all-loops" >> ./results/result_gcc5_intr_loop_unroll_funroll-all-loops.txt
-gcc example1_intr_loop_unroll.c -w -funroll-all-loops -o ./results/example1_intr_loop_unroll_funroll-all-loops
-gcc example1_intr_loop_unroll.c -w -funroll-all-loops -S -o ./results/example1_intr_loop_unroll_funroll-all-loops.s
-./results/example1_intr_loop_unroll_funroll-all-loops >> ./results/result_gcc5_intr_loop_unroll_funroll-all-loops.txt
+result_file="./results/result_gcc5_intr_fixed_reg_funroll-all-loops.txt"
+executable_file="./bin/example1_gcc5_intr_fixed_reg_funroll-all-loops"
+source_file="example1_intr_fixed_reg.c"
+assembly_file="./bin/example1_gcc5_intr_fixed_reg_funroll-all-loops.s"
+compilation_flags="-w -funroll-all-loops"
+message="Instrinsic vectorization with fixed registers with gcc5.4 with funroll-all-loops"
+date > $result_file
+echo $message >> $result_file
+gcc $source_file $compilation_flags -o $executable_file
+gcc $source_file $compilation_flags -S -o $assembly_file
+$executable_file >> $result_file
+
+result_file="./results/result_gcc5_intr_loop_unroll_funroll-all-loops.txt"
+executable_file="./bin/example1_gcc5_intr_loop_unroll_funroll-all-loops"
+source_file="example1_intr_loop_unroll.c"
+assembly_file="./bin/example1_gcc5_intr_loop_unroll_funroll-all-loops.s"
+compilation_flags="-w -funroll-all-loops"
+message="Intrinsic vectorization with loop unroll with gcc 5.4 with funroll-all-loops"
+date > $result_file
+echo $message >> $result_file
+gcc $source_file $compilation_flags -o $executable_file
+gcc $source_file $compilation_flags -S -o $assembly_file
+$executable_file >> $result_file
 
