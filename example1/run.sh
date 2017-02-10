@@ -1,4 +1,8 @@
 #!/bin/sh
+size=256
+if [ "$#" -eq 1 ];then
+        size="$1"
+fi
 ############################################_O0_###########################################
 result_file="./results/result_gcc5_auto_O0.txt"
 executable_file="./bin/example1_gcc5_auto_O0"
@@ -10,7 +14,7 @@ date > $result_file
 echo $message >> $result_file
 gcc $source_file $compilation_flags -o $executable_file
 gcc $source_file $compilation_flags -S -o $assembly_file
-$executable_file >> $result_file
+$executable_file $size >> $result_file
 
 result_file="./results/result_gcc5_intr_O0.txt"
 executable_file="./bin/example1_gcc5_intr_O0"
@@ -22,7 +26,7 @@ date > $result_file
 echo $message >> $result_file
 gcc $source_file $compilation_flags -o $executable_file
 gcc $source_file $compilation_flags -S -o $assembly_file
-$executable_file >> $result_file
+$executable_file $size >> $result_file
 
 
 result_file="./results/result_gcc5_intr_fixed_reg_O0.txt"
