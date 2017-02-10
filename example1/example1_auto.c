@@ -36,7 +36,7 @@ long perf_event_open(struct perf_event_attr *hw_event, pid_t pid, int cpu, int g
 Scales the result obtained by the ratio enabled(time actually measuring)/running(time of the execution)
 */
 static inline unsigned long long perf_count(unsigned long long *values) {
-        printf("count:%llu\nenabled:%llu\nrunning:%llu\n",values[0],values[1],values[2]);
+//        printf("count:%llu\nenabled:%llu\nrunning:%llu\n",values[0],values[1],values[2]);
         return (unsigned long long)((float)values[0]*(float)values[1]/(float)values[2]);
 }
 
@@ -125,12 +125,12 @@ int main(int argc, char **argv){
 	
 	//prints counters
         read(fd[INSTRUCTIONS], counts, sizeof(counts));
-	printf("Instructions = %llu\n",perf_count(counts));
+	printf("Instructions = %llu %s.\n",perf_count(counts),counts[1]==counts[2]?"real":"scaled");
 	read(fd[CYCLES], counts, sizeof(counts));
-        printf("Cycles = %llu\n",perf_count(counts));
+        printf("Cycles = %llu %s.\n",perf_count(counts),counts[1]==counts[2]?"real":"scaled");
         read(fd[CACHE_REFERENCES], counts, sizeof(counts));
-	printf("Cache references = %llu\n",perf_count(counts));
+	printf("Cache references = %llu %s.\n",perf_count(counts),counts[1]==counts[2]?"real":"scaled");
 	read(fd[CACHE_MISSES], counts, sizeof(counts));
-        printf("Cache misses = %llu\n",perf_count(counts));
+        printf("Cache misses = %llu %s.\n",perf_count(counts),counts[1]==counts[2]?"real":"scaled");
  
 }
