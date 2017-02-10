@@ -14,6 +14,14 @@ Examples have been modified to avoid optimizations levels skiping computation
 #include <asm/unistd.h>
 #include <linux/perf_event.h>
 
+enum events{
+	INSTRUCTIONS,
+	CYCLES,
+	CACHE_REFERENCES,
+	CACHE_MISSES,
+	EVENTS_COUNT
+}EVENTS;
+
 /*Open perf event.
 pid->if 0 measures current process, if -1 measures all process;
 cpu->-1 to measure on all cpus;
@@ -71,28 +79,58 @@ int main(int argc, char **argv){
         attr.exclude_kernel = 1;//Only read user space
         attr.exclude_hv = 1;//ONly read user space
 
-        //file descriptor to measure instructions count
-        int fd=perf_event_open(&attr, 0, -1, -1, 0);
-        if (fd == -1){
-                printf("cannot open perf_counter for instructions");
+	//File descriptor for events
+	int fd[EVENTS_COUNT];
+	fd[INSTRUCTIONS]=perf_event_open(&attr, 0, -1, -1, 0);
+        if (fd[INSTRUCTIONS] == -1){
+                printf("cannot open perf_counter for instructions\n");
+                exit(0);
+        }
+	attr.config = PERF_COUNT_HW_CPU_CYCLES;
+	fd[CYCLES]=perf_event_open(&attr, 0, -1, -1, 0);
+        if (fd[CYCLES] == -1){
+                printf("cannot open perf_counter for cycles\n");
+                exit(0);
+        }
+	attr.config = PERF_COUNT_HW_CACHE_REFERENCES;
+        fd[CACHE_REFERENCES]=perf_event_open(&attr, 0, -1, -1, 0);
+        if (fd[CACHE_REFERENCES] == -1){
+                printf("cannot open perf_counter for cache references\n");
+                exit(0);
+        }
+	attr.config = PERF_COUNT_HW_CACHE_MISSES;
+        fd[CACHE_MISSES]=perf_event_open(&attr, 0, -1, -1, 0);
+        if (fd[CACHE_MISSES] == -1){
+                printf("cannot open perf_counter for cache references\n");
                 exit(0);
         }
 
 	//Resets counter
-        ioctl(fd, PERF_EVENT_IOC_RESET,0);
-        ioctl(fd, PERF_EVENT_IOC_ENABLE,0);
+	for(i=0;i<EVENTS_COUNT;++i)
+	        ioctl(fd[i], PERF_EVENT_IOC_RESET,0);
+	//Enable counter
+	for(i=0;i<EVENTS_COUNT;++i)
+	        ioctl(fd[i], PERF_EVENT_IOC_ENABLE,0);
         //Compute
 	for (i=0; i<size; i++)
 		a[i] = b[i] + c[i];
-        //Reads counter
-        ioctl(fd, PERF_EVENT_IOC_DISABLE, 0);
-        read(fd, counts, sizeof(counts));
+        //Stops counter
+	for(i=0;i<EVENTS_COUNT;++i)
+	        ioctl(fd[i], PERF_EVENT_IOC_DISABLE, 0);
 
 	for(i=0;i<size;++i){
 		printf("%i|",a[i]);
 	}
 	printf("\n");
-
+	
+	//prints counters
+        read(fd[INSTRUCTIONS], counts, sizeof(counts));
 	printf("Instructions = %llu\n",perf_count(counts));
+	read(fd[CYCLES], counts, sizeof(counts));
+        printf("Cycles = %llu\n",perf_count(counts));
+        read(fd[CACHE_REFERENCES], counts, sizeof(counts));
+	printf("Cache references = %llu\n",perf_count(counts));
+	read(fd[CACHE_MISSES], counts, sizeof(counts));
+        printf("Cache misses = %llu\n",perf_count(counts));
  
 }
