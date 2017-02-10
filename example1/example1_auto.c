@@ -17,6 +17,7 @@ Examples have been modified to avoid optimizations levels skiping computation
 enum events{
 	INSTRUCTIONS,
 	CYCLES,
+	BRANCHES_MISSPREDICTED,
 	CACHE_REFERENCES,
 	CACHE_MISSES,
 	EVENTS_COUNT
@@ -86,18 +87,28 @@ int main(int argc, char **argv){
                 printf("cannot open perf_counter for instructions\n");
                 exit(0);
         }
+	attr.type = PERF_TYPE_HARDWARE;
 	attr.config = PERF_COUNT_HW_CPU_CYCLES;
 	fd[CYCLES]=perf_event_open(&attr, 0, -1, -1, 0);
         if (fd[CYCLES] == -1){
                 printf("cannot open perf_counter for cycles\n");
                 exit(0);
         }
+	attr.type = PERF_TYPE_RAW;
+	attr.config=0x10;
+        fd[BRANCHES_MISSPREDICTED]=perf_event_open(&attr, 0, -1, -1, 0);
+        if (fd[BRANCHES_MISSPREDICTED] == -1){
+                printf("cannot open perf_counter for BRANCHES_MISSPREDICTED\n");
+                exit(0);
+        }
+	attr.type = PERF_TYPE_HARDWARE;
 	attr.config = PERF_COUNT_HW_CACHE_REFERENCES;
         fd[CACHE_REFERENCES]=perf_event_open(&attr, 0, -1, -1, 0);
         if (fd[CACHE_REFERENCES] == -1){
                 printf("cannot open perf_counter for cache references\n");
                 exit(0);
         }
+	attr.type = PERF_TYPE_HARDWARE;
 	attr.config = PERF_COUNT_HW_CACHE_MISSES;
         fd[CACHE_MISSES]=perf_event_open(&attr, 0, -1, -1, 0);
         if (fd[CACHE_MISSES] == -1){
@@ -128,6 +139,8 @@ int main(int argc, char **argv){
 	printf("Instructions = %llu %s.\n",perf_count(counts),counts[1]==counts[2]?"real":"scaled");
 	read(fd[CYCLES], counts, sizeof(counts));
         printf("Cycles = %llu %s.\n",perf_count(counts),counts[1]==counts[2]?"real":"scaled");
+	read(fd[BRANCHES_MISSPREDICTED], counts, sizeof(counts));
+        printf("Banches misspredicted = %llu %s.\n",perf_count(counts),counts[1]==counts[2]?"real":"scaled");
         read(fd[CACHE_REFERENCES], counts, sizeof(counts));
 	printf("Cache references = %llu %s.\n",perf_count(counts),counts[1]==counts[2]?"real":"scaled");
 	read(fd[CACHE_MISSES], counts, sizeof(counts));
