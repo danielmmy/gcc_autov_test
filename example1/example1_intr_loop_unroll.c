@@ -29,7 +29,7 @@ pid->if 0 measures current process, if -1 measures all process;
 cpu->-1 to measure on all cpus;
 group_fd->allows for more than one event to measured by a single syscall, -1 to open a single event
 */
-long perf_event_open(struct perf_event_attr *hw_event, pid_t pid, int cpu, int group_fd, unsigned long flags){
+long perf_event_open(struct perf_event_attr *hw_event, pid_t pid, int cpu, int group_fd, long unsigned flags){
         return syscall(__NR_perf_event_open, hw_event, pid, cpu, group_fd, flags);
 }
 
@@ -37,9 +37,9 @@ long perf_event_open(struct perf_event_attr *hw_event, pid_t pid, int cpu, int g
 /*
 Scales the result obtained by the ratio enabled(time actually measuring)/running(time of the execution)
 */
-static inline unsigned long long perf_count(unsigned long long *values) {
+static inline long long unsigned perf_count(long long unsigned *values) {
         printf("count:%llu\nenabled:%llu\nrunning:%llu\n",values[0],values[1],values[2]);
-        return (unsigned long long)((float)values[0]*(float)values[1]/(float)values[2]);
+        return (long long unsigned)((float)values[0]*(float)values[1]/(float)values[2]);
 }
 
 
@@ -51,7 +51,7 @@ typedef union vector{
 
 
 int main(int argc, char **argv){
-	int size;
+	long long unsigned size;
         char *cpt;
         if(argc!=2){
                 size=256;
@@ -59,13 +59,13 @@ int main(int argc, char **argv){
                 size=strtol(argv[1],&cpt,10);
         }
         if(size%4){
-                printf("error: problem size must be divisible by 4\nsize:%d",size);
+                printf("error: problem size must be divisible by 4\nsize:%llu",size);
                 exit(0);
         }
-        int vector_size=size/4;
+        long long unsigned vector_size=size/4;
 
 	VECTOR a[vector_size], b[vector_size], c[vector_size];
-	int i,j;
+	long long unsigned i,j;
 
 	srand(time(NULL));
 
@@ -77,7 +77,7 @@ int main(int argc, char **argv){
 	}
 
 	//Gets the results from counter
-        unsigned long long counts[3];
+        long long unsigned counts[3];
         //Definig perf event attributes
         struct perf_event_attr attr;
         memset(&attr, 0, sizeof(attr));
