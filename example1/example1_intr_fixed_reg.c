@@ -13,6 +13,14 @@ Examples have been modified to avoid optimizations levels skiping computation
 #include <asm/unistd.h>
 #include <linux/perf_event.h>
 
+enum events{
+        INSTRUCTIONS,
+        CYCLES,
+        CACHE_REFERENCES,
+        CACHE_MISSES,
+        EVENTS_COUNT
+}EVENTS;
+
 typedef int v4si __attribute__ ((vector_size (16))); // vector of four int
 
 
@@ -30,7 +38,7 @@ long perf_event_open(struct perf_event_attr *hw_event, pid_t pid, int cpu, int g
 Scales the result obtained by the ratio enabled(time actually measuring)/running(time of the execution)
 */
 static inline unsigned long long perf_count(unsigned long long *values) {
-        printf("count:%llu\nenabled:%llu\nrunning:%llu\n",values[0],values[1],values[2]);
+//        printf("count:%llu\nenabled:%llu\nrunning:%llu\n",values[0],values[1],values[2]);
         return (unsigned long long)((float)values[0]*(float)values[1]/(float)values[2]);
 }
 
@@ -85,29 +93,74 @@ int main(int argc, char **argv){
         attr.exclude_kernel = 1;//Only read user space
         attr.exclude_hv = 1;//ONly read user space
 
-        //file descriptor to measure instructions count
-        int fd=perf_event_open(&attr, 0, -1, -1, 0);
-        if (fd == -1){
-                printf("cannot open perf_counter for instructions");
+        //File descriptor for events
+        int fd[EVENTS_COUNT];
+        fd[INSTRUCTIONS]=perf_event_open(&attr, 0, -1, -1, 0);
+        if (fd[INSTRUCTIONS] == -1){
+                printf("cannot open perf_counter for instructions\n");
+                exit(0);
+        }
+        attr.type = PERF_TYPE_HARDWARE;
+        attr.config = PERF_COUNT_HW_CPU_CYCLES;
+        fd[CYCLES]=perf_event_open(&attr, 0, -1, -1, 0);
+        if (fd[CYCLES] == -1){
+                printf("cannot open perf_counter for cycles\n");
+                exit(0);
+        }
+#if 0
+        attr.type = PERF_TYPE_RAW;
+        attr.config=0x10;
+        fd[BRANCHES_MISSPREDICTED]=perf_event_open(&attr, 0, -1, -1, 0);
+        if (fd[BRANCHES_MISSPREDICTED] == -1){
+                printf("cannot open perf_counter for BRANCHES_MISSPREDICTED\n");
+                exit(0);
+        }
+#endif
+        attr.type = PERF_TYPE_HARDWARE;
+        attr.config = PERF_COUNT_HW_CACHE_REFERENCES;
+        fd[CACHE_REFERENCES]=perf_event_open(&attr, 0, -1, -1, 0);
+        if (fd[CACHE_REFERENCES] == -1){
+                printf("cannot open perf_counter for cache references\n");
+                exit(0);
+        }
+        attr.type = PERF_TYPE_HARDWARE;
+        attr.config = PERF_COUNT_HW_CACHE_MISSES;
+        fd[CACHE_MISSES]=perf_event_open(&attr, 0, -1, -1, 0);
+        if (fd[CACHE_MISSES] == -1){
+                printf("cannot open perf_counter for cache references\n");
                 exit(0);
         }
 
-	//Resets counter
-        ioctl(fd, PERF_EVENT_IOC_RESET,0);
-        ioctl(fd, PERF_EVENT_IOC_ENABLE,0);
+        //Resets counter
+        for(i=0;i<EVENTS_COUNT;++i)
+                ioctl(fd[i], PERF_EVENT_IOC_RESET,0);
+        //Enable counter
+        for(i=0;i<EVENTS_COUNT;++i)
+                ioctl(fd[i], PERF_EVENT_IOC_ENABLE,0);
         //Compute
 	for (i=0; i<vector_size;++i)
 		a[i].v = b[i].v + c[i].v;
-        //Reads counter
-        ioctl(fd, PERF_EVENT_IOC_DISABLE, 0);
-        read(fd, counts, sizeof(counts));
+        //Stops counter
+        for(i=0;i<EVENTS_COUNT;++i)
+                ioctl(fd[i], PERF_EVENT_IOC_DISABLE, 0);
 
+        long long unsigned result=0;
         for(i=0;i<4;++i){
                 for(j=0;j<vector_size;++j){
-                        printf("%i|",a[i].i[j]);
+                        result+=a[i].i[j];
                 }
         }
-	printf("\n");
- 
-	printf("Instructions = %llu\n",perf_count(counts));
+        printf("Result: %llu\n",result);
+
+
+        //prints counters
+        read(fd[INSTRUCTIONS], counts, sizeof(counts));
+        printf("Instructions = %llu %s.\n",perf_count(counts),counts[1]==counts[2]?"real":"scaled");
+        read(fd[CYCLES], counts, sizeof(counts));
+        printf("Cycles = %llu %s.\n",perf_count(counts),counts[1]==counts[2]?"real":"scaled");
+        read(fd[CACHE_REFERENCES], counts, sizeof(counts));
+        printf("Cache references = %llu %s.\n",perf_count(counts),counts[1]==counts[2]?"real":"scaled");
+        read(fd[CACHE_MISSES], counts, sizeof(counts));
+        printf("Cache misses = %llu %s.\n",perf_count(counts),counts[1]==counts[2]?"real":"scaled");
+
 }
