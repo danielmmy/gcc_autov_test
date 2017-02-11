@@ -86,7 +86,7 @@ do
 	#execution
 	for k in {1..30}
 	do
-		$executable_file >> $result_file
+		$executable_file $size >> $result_file
 	done
 	#result processing
         echo "###################Run Average###################" >>  $result_file
@@ -114,7 +114,7 @@ do
 	#execution
 	for k in {1..30}
 	do
-		$executable_file >> $result_file
+		$executable_file $size >> $result_file
 	done
 	#result processing
         echo "###################Run Average###################" >>  $result_file
