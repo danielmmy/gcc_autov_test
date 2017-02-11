@@ -8,7 +8,7 @@ mkdir ./bin
 mkdir ./results
 
 executions=30
-compilers=("gcc-5" "gcc-6")
+compilers=("gcc-5" "gcc-6" "gcc-4.8" "clang")
 flags=("-O0" "-O1" "-O2" "-O3" "-funroll-all-loops")
 for i in "${compilers[@]}"
 do
