@@ -180,13 +180,13 @@ int main(int argc, char **argv){
         unsigned long long us=0;
         us=(stop_time.tv_sec-start_time.tv_sec)*1000000;
         us+=stop_time.tv_usec-start_time.tv_usec;
-        printf("Wall clock time[gettimeofday(2)]: %lluus\n",us);
+        printf("Wall clock time[gettimeofday(2)] = %llu us\n",us);
         //prints counters
         printf("PMU statistics:\n");
         read(fd[SW_CPU_CLOCK], counts, sizeof(counts));
-        printf("CPU clock = %lluns %s.\n",perf_count(counts),counts[1]==counts[2]?"real":"scaled");
+        printf("CPU clock = %llu ns %s.\n",perf_count(counts),counts[1]==counts[2]?"real":"scaled");
         read(fd[SW_TASK_CLOCK], counts, sizeof(counts));
-        printf("Task clock = %lluns %s.\n",perf_count(counts),counts[1]==counts[2]?"real":"scaled");
+        printf("Task clock = %llu ns %s.\n",perf_count(counts),counts[1]==counts[2]?"real":"scaled");
         read(fd[INSTRUCTIONS], counts, sizeof(counts));
         printf("Instructions = %llu %s.\n",perf_count(counts),counts[1]==counts[2]?"real":"scaled");
         read(fd[CYCLES], counts, sizeof(counts));
