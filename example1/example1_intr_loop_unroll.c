@@ -38,7 +38,7 @@ long perf_event_open(struct perf_event_attr *hw_event, pid_t pid, int cpu, int g
 Scales the result obtained by the ratio enabled(time actually measuring)/running(time of the execution)
 */
 static inline long long unsigned perf_count(long long unsigned *values) {
-        printf("count:%llu\nenabled:%llu\nrunning:%llu\n",values[0],values[1],values[2]);
+        //printf("count:%llu\nenabled:%llu\nrunning:%llu\n",values[0],values[1],values[2]);
         return (long long unsigned)((float)values[0]*(float)values[1]/(float)values[2]);
 }
 
