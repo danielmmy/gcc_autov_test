@@ -66,7 +66,7 @@ int main(int argc, char **argv){
 	long long unsigned vector_size=size/4;
 
 	VECTOR a[vector_size], b[vector_size], c[vector_size];
-	int i,j;
+	long long unsigned i,j;
 
 	srand(time(NULL));
 
