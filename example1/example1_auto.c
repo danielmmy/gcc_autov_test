@@ -43,21 +43,21 @@ static inline unsigned long long perf_count(unsigned long long *values) {
 
 
 int main(int argc, char **argv){
-	int size;
+	unsigned long long size;
 	char *cpt;
 	if(argc!=2){
 		size=256;
 	}else{
-		size=strtol(argv[1],&cpt,10);
+		size=strtoull(argv[1],&cpt,10);
 	}
 	if(size%4){
-                printf("error: problem size must be divisible by 4\nsize:%d",size);
+                printf("error: problem size must be divisible by 4\nsize:%llu",size);
                 exit(0);
         }
 	
 
 	int a[size], b[size], c[size];
-	int i;
+	unsigned long long i;
 
 	srand(time(NULL));
 
@@ -129,10 +129,11 @@ int main(int argc, char **argv){
 	for(i=0;i<EVENTS_COUNT;++i)
 	        ioctl(fd[i], PERF_EVENT_IOC_DISABLE, 0);
 
+	unsigned long long result=0;
 	for(i=0;i<size;++i){
-		printf("%i|",a[i]);
+		result+=a[i];
 	}
-	printf("\n");
+	printf("result: %llu\n",result);
 	
 	//prints counters
         read(fd[INSTRUCTIONS], counts, sizeof(counts));
