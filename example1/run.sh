@@ -1,5 +1,5 @@
 #!/bin/bash
-size=256
+size=8192
 if [ "$#" -eq 1 ];then
         size="$1"
 fi
@@ -33,7 +33,7 @@ do
 		$executable_file $size >> $result_file
 	done
 	#result processing
-	echo "###################Run Avarage###################" >>  $result_file
+	echo "###################Run Average###################" >>  $result_file
 	echo "Avarage wall clock time = "`cat $result_file | grep Wall | cut -d= -f 2 | cut -d" " -f 2  | awk '{total = total + $1}END{print total}' | awk -v execs="$executions" '{total= $1 / execs}END{printf("%f",total)}'`" us" >> $result_file
 	echo "CPU clock = "`cat $result_file | grep "CPU clock" | cut -d= -f 2 | cut -d" " -f 2 | awk '{total = total + $1}END{print total}' | awk -v executions="$executions" '{total= $1 / executions}END{printf("%f",total)}'`" ns" >> $result_file
 	echo "Task clock = "`cat $result_file | grep "Task clock" | cut -d= -f 2 | cut -d" " -f 2 | awk '{total = total + $1}END{print total}' | awk -v executions="$executions" '{total= $1 / executions}END{printf("%f",total)}'`" ns" >> $result_file
@@ -61,7 +61,7 @@ do
 		$executable_file $size >> $result_file
 	done
 	#result processing
-        echo "###################Run Avarage###################" >>  $result_file
+        echo "###################Run Average###################" >>  $result_file
         echo "Avarage wall clock time = "`cat $result_file | grep Wall | cut -d= -f 2 | cut -d" " -f 2 | awk '{total = total + $1}END{print total}' | awk -v execs="$executions" '{total= $1 / execs}END{printf("%f",total)}'`" us" >> $result_file
         echo "CPU clock = "`cat $result_file | grep "CPU clock" | cut -d= -f 2 | cut -d" " -f 2 | awk '{total = total + $1}END{print total}' | awk -v executions="$executions" '{total= $1 / executions}END{printf("%f",total)}'`" ns" >> $result_file
         echo "Task clock = "`cat $result_file | grep "Task clock" | cut -d= -f 2 | cut -d" " -f 2 | awk '{total = total + $1}END{print total}' | awk -v executions="$executions" '{total= $1 / executions}END{printf("%f",total)}'`" ns" >> $result_file
@@ -89,7 +89,7 @@ do
 		$executable_file >> $result_file
 	done
 	#result processing
-        echo "###################Run Avarage###################" >>  $result_file
+        echo "###################Run Average###################" >>  $result_file
         echo "Avarage wall clock time = "`cat $result_file | grep Wall | cut -d= -f 2 | cut -d" " -f 2 | awk '{total = total + $1}END{print total}' | awk -v execs="$executions" '{total= $1 / execs}END{printf("%f",total)}'`" us" >> $result_file
         echo "CPU clock = "`cat $result_file | grep "CPU clock" | cut -d= -f 2 | cut -d" " -f 2 | awk '{total = total + $1}END{print total}' | awk -v executions="$executions" '{total= $1 / executions}END{printf("%f",total)}'`" ns" >> $result_file
         echo "Task clock = "`cat $result_file | grep "Task clock" | cut -d= -f 2 | cut -d" " -f 2 | awk '{total = total + $1}END{print total}' | awk -v executions="$executions" '{total= $1 / executions}END{printf("%f",total)}'`" ns" >> $result_file
@@ -117,7 +117,7 @@ do
 		$executable_file >> $result_file
 	done
 	#result processing
-        echo "###################Run Avarage###################" >>  $result_file
+        echo "###################Run Average###################" >>  $result_file
         echo "Avarage wall clock time = "`cat $result_file | grep Wall | cut -d= -f 2 | cut -d" " -f 2 | awk '{total = total + $1}END{print total}' | awk -v execs="$executions" '{total= $1 / execs}END{printf("%f",total)}'`" us" >> $result_file
         echo "CPU clock = "`cat $result_file | grep "CPU clock" | cut -d= -f 2 | cut -d" " -f 2 | awk '{total = total + $1}END{print total}' | awk -v executions="$executions" '{total= $1 / executions}END{printf("%f",total)}'`" ns" >> $result_file
         echo "Task clock = "`cat $result_file | grep "Task clock" | cut -d= -f 2 | cut -d" " -f 2 | awk '{total = total + $1}END{print total}' | awk -v executions="$executions" '{total= $1 / executions}END{printf("%f",total)}'`" ns" >> $result_file
