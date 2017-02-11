@@ -57,7 +57,7 @@ int main(int argc, char **argv){
 	long long unsigned size;
         char *cpt;
         if(argc!=2){
-                size=256;
+                size=8192;
         }else{
                 size=strtol(argv[1],&cpt,10);
         }
