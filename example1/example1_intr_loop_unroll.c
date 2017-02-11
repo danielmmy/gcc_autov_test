@@ -8,6 +8,7 @@ Examples have been modified to avoid optimizations levels skiping computation
 #include <stdlib.h>
 #include <string.h>
 #include <time.h>
+#include <sys/time.h>
 #include <sys/ioctl.h>
 #include <unistd.h>
 #include <asm/unistd.h>
@@ -18,6 +19,8 @@ enum events{
         CYCLES,
         CACHE_REFERENCES,
         CACHE_MISSES,
+        SW_CPU_CLOCK,
+        SW_TASK_CLOCK,
         EVENTS_COUNT
 }EVENTS;
 
@@ -76,6 +79,9 @@ int main(int argc, char **argv){
 		}
 	}
 
+        //measure clock wall time
+        struct timeval start_time, stop_time;
+
 	//Gets the results from counter
         long long unsigned counts[3];
         //Definig perf event attributes
@@ -126,6 +132,21 @@ int main(int argc, char **argv){
                 printf("cannot open perf_counter for cache references\n");
                 exit(0);
         }
+        attr.type = PERF_TYPE_SOFTWARE;
+        attr.config = PERF_COUNT_SW_CPU_CLOCK;
+        fd[SW_CPU_CLOCK]=perf_event_open(&attr, 0, -1, -1, 0);
+        if (fd[SW_CPU_CLOCK] == -1){
+                printf("cannot open perf_counter for software CPU clock\n");
+                exit(0);
+        }
+        attr.type = PERF_TYPE_SOFTWARE;
+        attr.config = PERF_COUNT_SW_TASK_CLOCK;
+        fd[SW_TASK_CLOCK]=perf_event_open(&attr, 0, -1, -1, 0);
+        if (fd[SW_TASK_CLOCK] == -1){
+                printf("cannot open perf_counter for software task clock\n");
+                exit(0);
+        }
+
 
         //Resets counter
         for(i=0;i<EVENTS_COUNT;++i)
@@ -133,6 +154,8 @@ int main(int argc, char **argv){
         //Enable counter
         for(i=0;i<EVENTS_COUNT;++i)
                 ioctl(fd[i], PERF_EVENT_IOC_ENABLE,0);
+        //wall clock start
+        gettimeofday(&start_time,0);
         //Compute
 	for (i=0; i<vector_size; ++i){
 		a[i].v = b[i].v + c[i].v;//1
@@ -170,6 +193,8 @@ int main(int argc, char **argv){
         //Stops counter
         for(i=0;i<EVENTS_COUNT;++i)
                 ioctl(fd[i], PERF_EVENT_IOC_DISABLE, 0);
+        //Wall clock stop
+        gettimeofday(&stop_time,0);
 
         long long unsigned result=0;
         for(i=0;i<4;++i){
@@ -179,8 +204,17 @@ int main(int argc, char **argv){
         }
         printf("Result: %llu\n",result);
 
-
+        //prints time
+        unsigned long long us=0;
+        us=(stop_time.tv_sec-start_time.tv_sec)*1000000;
+        us+=stop_time.tv_usec-start_time.tv_usec;
+        printf("Wall clock time[gettimeofday(2)]: %lluus\n",us);
         //prints counters
+        printf("PMU statistics:\n");
+        read(fd[SW_CPU_CLOCK], counts, sizeof(counts));
+        printf("CPU clock = %lluns %s.\n",perf_count(counts),counts[1]==counts[2]?"real":"scaled");
+        read(fd[SW_TASK_CLOCK], counts, sizeof(counts));
+        printf("Task clock = %lluns %s.\n",perf_count(counts),counts[1]==counts[2]?"real":"scaled");
         read(fd[INSTRUCTIONS], counts, sizeof(counts));
         printf("Instructions = %llu %s.\n",perf_count(counts),counts[1]==counts[2]?"real":"scaled");
         read(fd[CYCLES], counts, sizeof(counts));
